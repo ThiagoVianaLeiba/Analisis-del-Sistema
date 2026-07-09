@@ -2,7 +2,7 @@
 
 _________________________________________________________________________
 
-RNF de la entrevista:
+ # RNF de la entrevista:
 
 - El sistema debe ser seguro y proteger los datos personales de los pasajeros.
 - 
@@ -26,7 +26,7 @@ RNF de la entrevista:
 - 
 _________________________________________________________
 
-RF de la entrevista:
+ # RF de la entrevista:
 
 - El sistema debe permitir registrar pasajeros.
 
