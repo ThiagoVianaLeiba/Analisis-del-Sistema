@@ -8,6 +8,6 @@ Alumnos:
 
 -Thiago Viana Leiba  -  OWNER
 
--Ivan Naydenko
+-Ivan Naydenko  -  TEAM
 
--Thiago López
+-Thiago López  -  TEAM
