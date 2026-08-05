@@ -6,8 +6,8 @@ Alumnos:
 
 -Maximo Rodriguez
 
--Thiago Lopez
+-Thiago Viana Leiba
 
 -Ivan Naydenko
 
--Thiago Viana Leiba
+-Thiago López
