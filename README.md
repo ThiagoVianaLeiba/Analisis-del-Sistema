@@ -4,9 +4,9 @@ Profesor: Damian Olaso
 
 Alumnos: 
 
--Maximo Rodriguez
+-Maximo Rodriguez  -  MASTER
 
--Thiago Viana Leiba
+-Thiago Viana Leiba  -  OWNER
 
 -Ivan Naydenko
 
