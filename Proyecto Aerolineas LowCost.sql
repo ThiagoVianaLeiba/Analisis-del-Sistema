@@ -559,6 +559,23 @@ BEGIN
 END //
 DELIMITER ;
 
-CALL pasajeros_por_clase("Business")
+CALL pasajeros_por_clase("Business");
 
--- Buscar pasajeros por nombre
+
+USE aerolinealowcost;
+
+INSERT INTO vuelos
+(Matricula, Origen, Destino, FechaHoraSalida, FechaHoraLlegada)
+VALUES
+('N538LA', 'EZE', 'MIA', '2026-10-02 23:30:00', '2026-10-03 07:30:00'),
+('N538LA', 'MIA', 'EZE', '2026-10-05 21:00:00', '2026-10-06 06:30:00'),
+('LV-KCD', 'AEP', 'COR', '2026-10-02 08:00:00', '2026-10-02 09:15:00'),
+('LV-KCD', 'COR', 'AEP', '2026-10-04 18:00:00', '2026-10-04 19:15:00'),
+('LV-GHO', 'EZE', 'GRU', '2026-10-03 14:10:00', '2026-10-03 16:55:00'),
+('LV-GHO', 'GRU', 'EZE', '2026-10-06 17:30:00', '2026-10-06 19:20:00'),
+('EC-MUT', 'EZE', 'MAD', '2026-10-05 20:00:00', '2026-10-06 13:45:00'),
+('EC-MUT', 'MAD', 'EZE', '2026-10-10 23:55:00', '2026-10-11 07:50:00'),
+('N538LA', 'SCL', 'MAD', '2026-10-07 20:00:00', '2026-10-08 13:45:00'),
+('N538LA', 'MAD', 'SCL', '2026-10-12 20:00:00', '2026-10-13 07:00:00'),
+('LV-FUA', 'EZE', 'SCL', '2026-10-08 10:00:00', '2026-10-08 13:00:00'),
+('LV-FUA', 'SCL', 'EZE', '2026-10-10 14:30:00', '2026-10-10 17:30:00');
