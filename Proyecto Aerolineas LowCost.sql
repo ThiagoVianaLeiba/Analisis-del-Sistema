@@ -578,4 +578,171 @@ VALUES
 ('N538LA', 'SCL', 'MAD', '2026-10-07 20:00:00', '2026-10-08 13:45:00'),
 ('N538LA', 'MAD', 'SCL', '2026-10-12 20:00:00', '2026-10-13 07:00:00'),
 ('LV-FUA', 'EZE', 'SCL', '2026-10-08 10:00:00', '2026-10-08 13:00:00'),
-('LV-FUA', 'SCL', 'EZE', '2026-10-10 14:30:00', '2026-10-10 17:30:00')
+('LV-FUA', 'SCL', 'EZE', '2026-10-10 14:30:00', '2026-10-10 17:30:00');
+
+USE aerolinealowcost;
+
+Create Table if not exists historial_reservas (
+	IdHistorial INT auto_increment Primary key,
+    IdReserva INT,
+    IdPasajero INT,
+    IdVuelo INT,
+    Accion VARCHAR(30),
+    FechaHora DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+DELIMITER //
+
+CREATE TRIGGER trg_validar_horario_vuelo BEFORE INSERT ON vuelos FOR EACH ROW
+BEGIN
+	IF NEW.FechaHoraLlegada <= NEW.FechaHoraSalida THEN
+		SIGNAL SQLSTATE "45000"
+        SET MESSAGE_TEXT = "Error: la fecha de llegada debe ser posterior a la fecha de salida";
+	END IF;
+END//
+
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg_validar_horario_vuelo_update BEFORE UPDATE ON vuelos FOR EACH ROW
+BEGIN 
+	IF NEW.FechaHoraLlegada <= NEW.FechaHoraSalida THEN
+		SIGNAL SQLSTATE "45000"
+        SET MESSAGE_TEXT = "Error: la fecha de llegada debe ser posterior a la fecha de salida";
+	END IF;
+END//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER trg_limitar_reservas_capacidad
+BEFORE INSERT ON reservas
+FOR EACH ROW
+BEGIN
+    DECLARE capacidad_avion INT;
+    DECLARE cantidad_reservas INT;
+
+    SELECT a.Capacidad
+    INTO capacidad_avion
+    FROM vuelos v
+    INNER JOIN aviones a ON v.Matricula = a.Matricula
+    WHERE v.IdVuelo = NEW.IdVuelo;
+
+    SELECT COUNT(*)
+    INTO cantidad_reservas
+    FROM reservas
+    WHERE IdVuelo = NEW.IdVuelo;
+
+    IF cantidad_reservas >= capacidad_avion THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Error: el vuelo ya alcanzo la capacidad maxima del avion.';
+    END IF;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg_evitar_reserva_duplicada BEFORE INSERT ON reservas FOR EACH ROW
+BEGIN
+	DECLARE reservas_pasajero INT;
+    
+    SELECT COUNT(*)
+    INTO reservas_pasajero
+    FROM reservas
+    WHERE IdPasajero = NEW.IdVuelo;
+    
+    IF reservas_pasajero > 0 THEN
+		SIGNAL SQLSTATE "45000"
+        SET MESSAGE_TEXT = "Error: el pasajero ya tiene una reserva para este vuelo";
+	END IF;
+END//
+
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg_validar_asiento BEFORE INSERT ON reservas FOR EACH ROW
+BEGIN
+	IF NEW.NumeroAsiento NOT REGEXP "^[0-9{2}[A-Z]]$" THEN
+		SIGNAL SQLSTATE "45000"
+        SET MESSAGE_TEXT = "Error: el numero de asietno debe tener formato 01A, 12B, 23C, etc";
+	END IF;
+END//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER trg_evitar_tripulante_duplicado
+BEFORE INSERT ON asignaciontripulacion
+FOR EACH ROW
+BEGIN
+    DECLARE cantidad INT;
+
+    SELECT COUNT(*)
+    INTO cantidad
+    FROM asignaciontripulacion
+    WHERE IdVuelo = NEW.IdVuelo
+      AND IdTripulante = NEW.IdTripulante;
+
+    IF cantidad > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Error: el tripulante ya esta asignado a este vuelo.';
+    END IF;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER trg_limitar_pilotos_vuelo
+BEFORE INSERT ON asignaciontripulacion
+FOR EACH ROW
+BEGIN
+    DECLARE cantidad_pilotos INT;
+    DECLARE rol_tripulante VARCHAR(30);
+
+    SELECT Rol
+    INTO rol_tripulante
+    FROM tripulacion
+    WHERE IdTripulante = NEW.IdTripulante;
+
+    SELECT COUNT(*)
+    INTO cantidad_pilotos
+    FROM asignaciontripulacion at
+    INNER JOIN tripulacion t
+        ON at.IdTripulante = t.IdTripulante
+    WHERE at.IdVuelo = NEW.IdVuelo
+      AND t.Rol = 'Piloto';
+
+    IF rol_tripulante = 'Piloto' AND cantidad_pilotos >= 2 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Error: un vuelo no puede tener mas de 2 pilotos.';
+    END IF;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER trg_historial_eliminacion_reserva
+AFTER DELETE ON reservas
+FOR EACH ROW
+BEGIN
+    INSERT INTO historial_reservas
+    (
+        IdReserva,
+        IdPasajero,
+        IdVuelo,
+        Accion
+    )
+    VALUES
+    (
+        OLD.IdReserva,
+        OLD.IdPasajero,
+        OLD.IdVuelo,
+        'Reserva eliminada'
+    );
+END //
+
+DELIMITER ;
