@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aerolíneas Low Cost | Volá Alto, Pagá Poco</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Fuente moderna Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <!-- Iconos modernos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- 1. BARRA SUPERIOR (NARANJA) -->
+    <header class="top-bar">
+        <!-- Logo que al hacerle clic abre la ventana gigante -->
+        <div class="logo-container">
+            <div onclick="openLogoModal()" style="display: flex; align-items: center; gap: 20px; cursor: pointer;">
+                <img src="logo.png" alt="Logo" class="brand-logo">
+                <span class="brand-name">AerolineasLowCost</span>
+            </div>
+        </div>
+
+        <div class="auth-buttons">
+            <a href="#" class="btn-login"><i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión</a>
+            <a href="#" class="btn-register"><i class="fa-solid fa-user-plus"></i> Registrarme</a>
+        </div>
+    </header>
+
+    <!-- 2. NAVEGACIÓN PRINCIPAL -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html" style="color: #ff6600;"><i class="fa-solid fa-house"></i> Inicio</a></li>
+            <li><a href="mis-vuelos.html"><i class="fa-solid fa-plane"></i> Mis Vuelos</a></li>
+            <li><a href="#" id="nav-checkin"><i class="fa-solid fa-passport"></i> Check-in</a></li>
+            <li><a href="manual.pdf" target="_blank"><i class="fa-solid fa-headset"></i> Ayuda al Usuario</a></li>
+            <li><a href="#destinos"><i class="fa-solid fa-earth-americas"></i> Destinos</a></li>
+        </ul>
+    </nav>
+
+    <!-- 3. PANEL DE RESERVA -->
+    <main class="hero-section" id="buscar">
+        <div class="booking-card">
+            <h2><i class="fa-solid fa-magnifying-glass"></i> Buscá tu próximo destino</h2>
+            
+            <form class="booking-form">
+                <div class="form-group">
+                    <label><i class="fa-solid fa-plane-departure"></i> Origen</label>
+                    <input type="text" placeholder="Ej: Buenos Aires (EZE)" required>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fa-solid fa-plane-arrival"></i> Destino</label>
+                    <input type="text" placeholder="Ej: Bariloche (BRC)" required>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fa-solid fa-calendar-day"></i> Ida</label>
+                    <input type="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fa-solid fa-calendar-check"></i> Vuelta</label>
+                    <input type="date">
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fa-solid fa-users"></i> Pasajeros</label>
+                    <select>
+                        <option>1 Pasajero</option>
+                        <option>2 Pasajeros</option>
+                        <option>3+ Pasajeros</option>
+                    </select>
+                </div>
+
+                <!-- Campo para Código Promocional -->
+                <div class="form-group coupon-group">
+                    <label><i class="fa-solid fa-tag"></i> ¿Tenés un cupón?</label>
+                    <div class="coupon-input-wrapper">
+                        <input type="text" id="coupon-code" placeholder="Ej: LOWCOST2026">
+                        <button type="button" id="btn-apply-coupon">Aplicar</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-search">
+                    Buscar Vuelos <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- 4. ESTADÍSTICAS -->
+    <section class="extra-info">
+        <div class="container">
+            <h2>¿Por qué viajar con Aerolíneas Low Cost?</h2>
+            <p class="subtitle">Conectamos los mejores paisajes y montañas de la Argentina con los precios más bajos del mercado.</p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                    <h3>+1.000.000</h3>
+                    <p>Pasajeros volando</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-mountain"></i></div>
+                    <h3>25</h3>
+                    <p>Destinos Nacionales</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+                    <h3>99.8%</h3>
+                    <p>Puntualidad de vuelo</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-piggy-bank"></i></div>
+                    <h3>100%</h3>
+                    <p>Ahorro garantizado</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. OFERTAS DEL MES -->
+    <section class="destinations-section" id="destinos">
+        <div class="container">
+            <h2>Ofertas del Mes ✈️</h2>
+            <p class="subtitle">Aprovechá estos precios imperdibles para tu próxima escapada.</p>
+
+            <div class="destinations-grid">
+                <!-- Tarjeta 1: Bariloche -->
+                <div class="destination-card">
+                    <img src="bariloche.jpg" alt="Bariloche">
+                    <div class="dest-content">
+                        <h3>San Carlos de Bariloche</h3>
+                        <p class="price">Desde <strong>$45.000</strong></p>
+                        <button type="button" class="btn-buy" onclick="comprarOferta('Buenos Aires (EZE)', 'San Carlos de Bariloche (BRC)', '$45.000')">Comprar Ahora</button>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2: Iguazú -->
+                <div class="destination-card">
+                    <img src="iguazu.jpg" alt="Iguazu">
+                    <div class="dest-content">
+                        <h3>Cataratas del Iguazú</h3>
+                        <p class="price">Desde <strong>$39.900</strong></p>
+                        <button type="button" class="btn-buy" onclick="comprarOferta('Buenos Aires (AEP)', 'Cataratas del Iguazú (IGR)', '$39.900')">Comprar Ahora</button>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3: Mendoza -->
+                <div class="destination-card">
+                    <img src="mendoza.jpg" alt="Mendoza">
+                    <div class="dest-content">
+                        <h3>Mendoza</h3>
+                        <p class="price">Desde <strong>$42.500</strong></p>
+                        <button type="button" class="btn-buy" onclick="comprarOferta('Buenos Aires (EZE)', 'Mendoza (MDZ)', '$42.500')">Comprar Ahora</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. SERVICIOS OPCIONALES -->
+    <section class="services-section">
+        <div class="container">
+            <h2>Personalizá tu viaje</h2>
+            <p class="subtitle">Pagá solo por lo que usás y armá tu vuelo a medida.</p>
+
+            <div class="services-grid">
+                <div class="service-box">
+                    <i class="fa-solid fa-suitcase-rolling"></i>
+                    <h3>Equipaje Extra</h3>
+                    <p>Agregá equipaje de mano o maleta en bodega ahorrando hasta un 50% online.</p>
+                </div>
+                <div class="service-box">
+                    <i class="fa-solid fa-chair"></i>
+                    <h3>Selección de Asientos</h3>
+                    <p>Elegí viajar en la ventana, adelante o con espacio extra para tus piernas.</p>
+                </div>
+                <div class="service-box">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h3>Asistencia al Viajero</h3>
+                    <p>Viajá totalmente cubierto ante cualquier imprevisto médico o cancelación.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. NEWSLETTER -->
+    <section class="newsletter-section">
+        <div class="container newsletter-box">
+            <div class="news-text">
+                <h2>¡Enterate de los Vuelos Flash antes que nadie!</h2>
+                <p>Suscribite con tu correo y recibí ofertas secretas directo en tu casilla.</p>
+            </div>
+            <form class="news-form">
+                <input type="email" placeholder="Tu correo electrónico..." required>
+                <button type="submit">Suscribirme</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- PIE DE PÁGINA -->
+    <footer>
+        <p>&copy; 2026 Aerolíneas Low Cost — Proyecto Interdisciplinario Colegio Técnico.</p>
+    </footer>
+
+
+    <!-- =================MODALES Y JS================ -->
+
+    <!-- VENTANA MODAL PARA VER EL LOGO MÁS GRANDE -->
+    <div id="logoModal" class="modal" onclick="closeLogoModal()">
+        <div style="background: white; padding: 40px; border-radius: 20px; text-align: center; position: relative; max-width: 420px; width: 90%; box-shadow: 0 15px 40px rgba(0,0,0,0.5);" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeLogoModal()" style="position: absolute; top: 12px; right: 18px; font-size: 28px; cursor: pointer; color: #333;">&times;</span>
+            <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 24px; font-weight: 800;">Aerolíneas Low Cost</h3>
+            <!-- Logo grande -->
+            <img src="logo.png" alt="Logo Gigante" style="width: 250px; height: 250px; object-fit: cover; border-radius: 50%; border: 6px solid #ff6600; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+            <!-- Frase original del colegio -->
+            <p style="color: #555; font-size: 15px; margin-top: 20px; font-weight: 700;">El transporte oficial de la escuela técnica.</p>
+        </div>
+    </div>
+
+    <!-- VENTANA MODAL DE INICIO DE SESIÓN -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
+            <h2><i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="loginEmail" placeholder="tucorreo@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>DNI (8 dígitos)</label>
+                    <input type="text" id="loginDni" placeholder="Ej: 40123456" maxlength="8" required>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="loginPassword" placeholder="********" required>
+                </div>
+                <button type="submit" class="btn-modal-action">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- VENTANA MODAL DE REGISTRO -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('registerModal')">&times;</span>
+            <h2><i class="fa-solid fa-user-plus"></i> Crear Cuenta Low Cost</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label>Nombre y Apellido</label>
+                    <input type="text" id="regName" placeholder="Ej: Willy Olaso" required>
+                </div>
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="regEmail" placeholder="tucorreo@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>DNI (Sin puntos, 8 dígitos)</label>
+                    <input type="text" id="regDni" placeholder="Ej: 40123456" maxlength="8" required>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="regPassword" placeholder="********" required>
+                </div>
+                <button type="submit" class="btn-modal-action">Registrarse</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const btnLogin = document.querySelector('.btn-login');
+        const btnRegister = document.querySelector('.btn-register');
+
+        btnLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('loginModal').style.display = 'flex';
+        });
+
+        btnRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('registerModal').style.display = 'flex';
+        });
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Funciones para abrir y cerrar el logo en grande
+        function openLogoModal() {
+            document.getElementById('logoModal').style.display = 'flex';
+        }
+
+        function closeLogoModal() {
+            document.getElementById('logoModal').style.display = 'none';
+        }
+
+        // Registro con DNI de 8 dígitos
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const dni = document.getElementById('regDni').value;
+            const pass = document.getElementById('regPassword').value;
+
+            const dniRegex = /^\d{8}$/;
+            if (!dniRegex.test(dni)) {
+                alert('⚠️ Error: El DNI debe contener exactamente 8 números (sin puntos ni letras).');
+                return;
+            }
+
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userDni', dni);
+            localStorage.setItem('userPass', pass);
+            localStorage.setItem('isLoggedIn', 'true');
+
+            alert('¡Cuenta creada e iniciada con éxito!');
+            closeModal('registerModal');
+            btnLogin.innerHTML = `<i class="fa-solid fa-user"></i> ${name}`;
+        });
+
+        // Inicio de Sesión
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const dni = document.getElementById('loginDni').value;
+            const pass = document.getElementById('loginPassword').value;
+
+            const savedEmail = localStorage.getItem('userEmail');
+            const savedDni = localStorage.getItem('userDni');
+            const savedPass = localStorage.getItem('userPass');
+            const savedName = localStorage.getItem('userName');
+
+            if (email === savedEmail && dni === savedDni && pass === savedPass) {
+                localStorage.setItem('isLoggedIn', 'true');
+                alert(`¡Bienvenido de nuevo, ${savedName}! ✈️`);
+                closeModal('loginModal');
+                btnLogin.innerHTML = `<i class="fa-solid fa-user"></i> ${savedName}`;
+            } else {
+                alert('⚠️ Datos incorrectos. Verifique su correo, DNI de 8 dígitos o contraseña.');
+            }
+        });
+
+        // BUSCADOR PRINCIPAL CON VALIDACIÓN DE SESIÓN
+        const bookingForm = document.querySelector('.booking-form');
+
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+            if (!isLoggedIn || isLoggedIn !== 'true') {
+                alert('⚠️ Para reservar o buscar un vuelo necesitas iniciar sesión o registrarte primero.');
+                document.getElementById('loginModal').style.display = 'flex';
+                return;
+            }
+
+            const inputs = bookingForm.querySelectorAll('input');
+            const origen = inputs[0].value;
+            const destino = inputs[1].value;
+            const ida = inputs[2].value;
+            const vuelta = inputs[3].value ? inputs[3].value : 'Solo ida';
+            const pasajeros = bookingForm.querySelector('select').value;
+            const codigoVuelo = 'LOW-' + Math.floor(Math.random() * 89999 + 10000);
+
+            const nuevoVuelo = { origen, destino, ida, vuelta, pasajeros, codigo: codigoVuelo };
+
+            let misVuelos = JSON.parse(localStorage.getItem('misVuelos')) || [];
+            misVuelos.push(nuevoVuelo);
+            localStorage.setItem('misVuelos', JSON.stringify(misVuelos));
+
+            if (confirm('¡Vuelo reservado con éxito! 🎟️ ¿Querés ir a la sección "Mis Vuelos" para verlo?')) {
+                window.location.href = 'mis-vuelos.html';
+            }
+        });
+
+        // FUNCIÓN PARA COMPRAR LAS OFERTAS DEL MES DIRECTO
+        function comprarOferta(origen, destino, precio) {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+            if (!isLoggedIn || isLoggedIn !== 'true') {
+                alert('⚠️ Para aprovechar las ofertas del mes y reservar, necesitás iniciar sesión o registrarte.');
+                document.getElementById('loginModal').style.display = 'flex';
+                return;
+            }
+
+            const fechaHoy = new Date().toISOString().split('T')[0];
+            const codigoVuelo = 'OFE-' + Math.floor(Math.random() * 89999 + 10000);
+
+            const nuevoVuelo = { 
+                origen: origen, 
+                destino: destino, 
+                ida: fechaHoy, 
+                vuelta: 'Promoción Oferta', 
+                pasajeros: '1 Pasajero (' + precio + ')', 
+                codigo: codigoVuelo 
+            };
+
+            let misVuelos = JSON.parse(localStorage.getItem('misVuelos')) || [];
+            misVuelos.push(nuevoVuelo);
+            localStorage.setItem('misVuelos', JSON.stringify(misVuelos));
+
+            if (confirm(`¡Oferta aplicada para ${destino} a solo ${precio}! ✈️ ¿Querés ir a "Mis Vuelos" a ver tu pasaje?`)) {
+                window.location.href = 'mis-vuelos.html';
+            }
+        }
+    </script>
+</body>
+</html>

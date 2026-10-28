@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Vuelos | Aerolíneas Low Cost</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- 1. BARRA SUPERIOR -->
+    <header class="top-bar">
+        <div class="logo-container">
+            <img src="logo.png" alt="Logo" class="brand-logo">
+            <span class="brand-name">AerolineasLowCost</span>
+        </div>
+        <div class="auth-buttons">
+            <a href="index.html" class="btn-login"><i class="fa-solid fa-house"></i> Volver al Inicio</a>
+        </div>
+    </header>
+
+    <!-- 2. NAVEGACIÓN PRINCIPAL (CON INICIO, CHECK-IN Y DEMÁS) -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
+            <li><a href="mis-vuelos.html" style="color: #ff6600;"><i class="fa-solid fa-plane"></i> Mis Vuelos</a></li>
+            <li><a href="#" id="nav-checkin"><i class="fa-solid fa-passport"></i> Check-in</a></li>
+            <li><a href="manual.pdf" target="_blank"><i class="fa-solid fa-headset"></i> Ayuda al Usuario</a></li>
+            <li><a href="index.html#destinos"><i class="fa-solid fa-earth-americas"></i> Destinos</a></li>
+        </ul>
+    </nav>
+
+    <!-- 3. CONTENIDO DE MIS VUELOS -->
+    <main class="container" style="padding: 50px 0; min-height: 60vh;">
+        <h2 style="color: #2c3e50; margin-bottom: 10px; font-size: 28px;"><i class="fa-solid fa-ticket"></i> Mis Vuelos Reservados</h2>
+        <p class="subtitle">Acá podés ver el listado de todos los pasajes que guardaste en el sistema.</p>
+        
+        <!-- Contenedor donde cargaremos los tickets desde la memoria -->
+        <div id="tickets-container" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+            <p style="color: #777; font-style: italic;">No tenés vuelos registrados todavía. Buscá y reservá un vuelo desde la página principal.</p>
+        </div>
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer>
+        <p>&copy; 2026 Aerolíneas Low Cost — Proyecto Interdisciplinario Colegio Técnico.</p>
+    </footer>
+
+    <!-- SCRIPT PARA LEER LOS VUELOS GUARDADOS -->
+    <script>
+        const ticketsContainer = document.getElementById('tickets-container');
+        
+        // Recuperamos los vuelos guardados en el navegador (LocalStorage)
+        let savedVuelos = JSON.parse(localStorage.getItem('misVuelos')) || [];
+
+        if (savedVuelos.length > 0) {
+            ticketsContainer.innerHTML = ''; // Limpiamos el texto por defecto
+            savedVuelos.forEach((vuelo, index) => {
+                const ticketCard = document.createElement('div');
+                ticketCard.style.cssText = "background: white; border-left: 6px solid #ff6600; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;";
+                
+                ticketCard.innerHTML = `
+                    <div>
+                        <span style="background: #ff6600; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 800;">CONFIRMADO ✈️</span>
+                        <h3 style="margin-top: 8px; color: #2c3e50; font-size: 18px;">${vuelo.origen} ➔ ${vuelo.destino}</h3>
+                        <p style="font-size: 13px; color: #555; margin-top: 4px;">📅 Ida: ${vuelo.ida} | 🔄 Vuelta: ${vuelo.vuelta} | 👥 ${vuelo.pasajeros}</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-size: 12px; color: #888; display: block;">Código: ${vuelo.codigo}</span>
+                        <button onclick="eliminarVuelo(${index})" style="background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: 700; margin-top: 5px; font-size: 12px;">Cancelar Vuelo</button>
+                    </div>
+                `;
+                ticketsContainer.appendChild(ticketCard);
+            });
+        }
+
+        function eliminarVuelo(index) {
+            savedVuelos.splice(index, 1);
+            localStorage.setItem('misVuelos', JSON.stringify(savedVuelos));
+            location.reload(); // Recarga la página para actualizar la lista
+        }
+    </script>
+</body>
+</html>
